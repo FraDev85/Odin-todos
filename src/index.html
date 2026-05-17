@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.35.0/tabler-icons.min.css"
+    />
+    <title>ToDo App</title>
+  </head>
+  <body>
+    <div class="app">
+      <!-- LEFT SIDE PANEL-->
+      <aside class="panel panel-left">
+        <!-- HEADER -->
+        <div class="panel-header">
+          <div class="logo">Do<span>.</span>it</div>
+          <button
+            class="icon-btn icon-btn-ghost"
+            id="btn-new-project"
+            title="New project"
+          >
+            <i class="ti ti-folder-plus"></i>
+          </button>
+        </div>
+        <!-- SEARCH PROJECT -->
+        <div class="search-wrapper">
+          <i class="ti ti-search"></i>
+          <input
+            type="text"
+            id="project-search"
+            placeholder="Search Project..."
+            autocomplete="off"
+          />
+        </div>
+        <!-- PROJECT LIST-->
+        <nav class="project-list" id="project-list" role="list"></nav>
+        <!-- FOOTER: total count -->
+        <div class="panel-footer">
+          <span id="project-count">0 project</span>
+        </div>
+      </aside>
+      <!--RIGHT PANEL -->
+      <section class="panel panel-right">
+        <div class="empty-state" id="empty-state">
+          <i class="ti ti-layout-kanban"></i>
+          <p>Select or create a project<br />to view its tasks</p>
+          <!--TASK view (Shown when a project is selected)-->
+          <div class="task-view" id="task-view"></div>
+          <!-- TASK Panel Header -->
+          <div class="panel-header panel-header-tasks">
+            <div>
+              <h1 class="task-view-title" id="task-view-title">Project</h1>
+              <p class="task-view-meta" id="task-view-meta"></p>
+            </div>
+            <div class="header-actions">
+              <!-- Filter buttons -->
+              <button
+                class="filter-group"
+                role="group"
+                aria-label="Filter task"
+              ></button>
+              <button class="filter-btn active" data-filter="all">All</button
+              ><button class="filter-btn" data-filter="pending">Pending</button
+              ><button class="filter-btn" data-filter="done">Done</button>
+            </div>
+            <!--Edit/Delete project-->
+            <button
+              class="icon-btn icon-btn-ghost"
+              id="btn-edit-project"
+              title="Rename project"
+            >
+              <i class="ti ti-pencil"></i>
+            </button>
+            <button
+              class="icon-btn icon-btn-danger"
+              id="btn-delete-project"
+              title="Delete project"
+            >
+              <i class="ti ti-trash"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Add task input-->
+        <div class="add-task-row">
+          <div class="add-task-input-wrap">
+            <i class="ti ti-plus"></i>
+            <input
+              type="text"
+              id="add-task-input"
+              placeholder="Add new task and press Enter.."
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <!-- Progress Bar-->
+        <div class="progrees-row">
+          <div class="progress-bar">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+          <span class="progress-label" id="progress-label">0%</span>
+        </div>
+
+        <!--Task list-->
+        <ul class="task-list" id="task-list"></ul>
+        <!-- Empty Task State-->
+        <div class="task-empty" id="task-empty" hidden>
+          <i class="ti ti-clipboard-list"></i>
+          <p>No tasks yet. add one above</p>
+        </div>
+      </section>
+      <!-- MODAL - Task Detail / Edit -->
+      <div
+        class="modal-overlay"
+        id="modal-overlay"
+        hidden
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div class="modal">
+          <div class="modal-header">
+            <h2 class="modal-title" id="modal-title">Task Details</h2>
+            <button
+              class="icon-btn icon-btn-ghost"
+              id="modal-close"
+              aria-label="close"
+            >
+              <i class="ti ti-x"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Task Test-->
+            <label for="modal-text" class="field-label"></label>
+            <input
+              type="text"
+              class="modal-input"
+              id="modal-text"
+              placeholder="task title"
+            />
+
+            <!-- Notes -->
+            <label for="modal-notes" class="field-label">Notes</label>
+            <textarea
+              class="modal-textarea"
+              id="modal-notes"
+              placeholder="Add notes…"
+              rows="4"
+            ></textarea>
+
+            <!-- Status -->
+            <label class="field-label">Status</label>
+            <div class="status-toogle">
+              <button
+                class="status-btn"
+                data-status="pending"
+                id="status-pending"
+              >
+                <i class="ti ti-circle-dotted"></i> Pending
+              </button>
+              <button
+                class="status-btn"
+                data-status="completed"
+                id="status-completed"
+              >
+                <i class="ti ti-circle-check"></i> Completed
+              </button>
+            </div>
+            <!-- Created date (read-only)-->
+            <p class="modal-created" id="modal-created"></p>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn-danger" id="modal-delete">
+              <i class="ti ti-trash"></i> Delete task
+            </button>
+            <button class="btn btn-primary" id="modal-save">
+              <i class="ti ti-device-floppy"></i> Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- MODAL New / Rename Project -->
+      <div
+        class="modal-overlay"
+        id="project-modal-overlay"
+        hidden
+        role="dialog"
+        aria-model="true"
+        aria-labelledby="project-modal-title"
+      >
+        <div class="modal modal-sm">
+          <div class="modal-header">
+            <h2 class="modal-title" id="project-modal-title">New Project</h2>
+            <button
+              class="icon-btn icon-btn-ghost"
+              id="project-modal-close"
+              aria-label="Close"
+            >
+              <i class="ti ti-x"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <label class="field-label" for="project-name-input"
+              >Project name</label
+            >
+            <input
+              class="modal-input"
+              type="text"
+              id="project-name-input"
+              placeholder="e.g. Work, Shopping, Travel…"
+              autocomplete="off"
+            />
+
+            <!-- Color picker -->
+            <label class="field-label" style="margin-top: 1rem">Color</label>
+            <div class="color-picker" id="color-picker">
+              <!-- Swatches generated by JS -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-ghost" id="project-modal-cancel">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="project-modal-save">
+              <i class="ti ti-check"></i> Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
