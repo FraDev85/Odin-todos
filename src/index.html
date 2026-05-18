@@ -9,16 +9,15 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
       rel="stylesheet"
     />
-
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.35.0/tabler-icons.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.31.0/tabler-icons.min.css"
     />
     <title>ToDo App</title>
   </head>
   <body>
     <div class="app">
-      <!-- LEFT SIDE PANEL-->
+      <!-- LEFT SIDE PANEL -->
       <aside class="panel panel-left">
         <!-- HEADER -->
         <div class="panel-header">
@@ -41,56 +40,59 @@
             autocomplete="off"
           />
         </div>
-        <!-- PROJECT LIST-->
+        <!-- PROJECT LIST -->
         <nav class="project-list" id="project-list" role="list"></nav>
         <!-- FOOTER: total count -->
         <div class="panel-footer">
           <span id="project-count">0 project</span>
         </div>
       </aside>
-      <!--RIGHT PANEL -->
+
+      <!-- RIGHT PANEL -->
       <section class="panel panel-right">
+        <!-- Empty state: shown when no project is selected -->
         <div class="empty-state" id="empty-state">
           <i class="ti ti-layout-kanban"></i>
           <p>Select or create a project<br />to view its tasks</p>
-          <!--TASK view (Shown when a project is selected)-->
-          <div class="task-view" id="task-view"></div>
-          <!-- TASK Panel Header -->
-          <div class="panel-header panel-header-tasks">
-            <div>
-              <h1 class="task-view-title" id="task-view-title">Project</h1>
-              <p class="task-view-meta" id="task-view-meta"></p>
-            </div>
-            <div class="header-actions">
-              <!-- Filter buttons -->
-              <button
-                class="filter-group"
-                role="group"
-                aria-label="Filter task"
-              ></button>
-              <button class="filter-btn active" data-filter="all">All</button
-              ><button class="filter-btn" data-filter="pending">Pending</button
-              ><button class="filter-btn" data-filter="done">Done</button>
-            </div>
-            <!--Edit/Delete project-->
-            <button
-              class="icon-btn icon-btn-ghost"
-              id="btn-edit-project"
-              title="Rename project"
-            >
-              <i class="ti ti-pencil"></i>
-            </button>
-            <button
-              class="icon-btn icon-btn-danger"
-              id="btn-delete-project"
-              title="Delete project"
-            >
-              <i class="ti ti-trash"></i>
-            </button>
-          </div>
         </div>
-        <!-- Add task input-->
-        <div class="add-task-row">
+
+        <!-- TASK Panel Header: shown when a project is selected -->
+        <div
+          class="panel-header panel-header-tasks"
+          id="task-view-header"
+          hidden
+        >
+          <div>
+            <h1 class="task-view-title" id="task-view-title">Project</h1>
+            <p class="task-view-meta" id="task-view-meta"></p>
+          </div>
+          <div class="header-actions">
+            <!-- Filter buttons -->
+            <div class="filter-group" role="group" aria-label="Filter tasks">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="pending">Pending</button>
+              <button class="filter-btn" data-filter="done">Done</button>
+            </div>
+          </div>
+          <!-- Edit/Delete project -->
+          <button
+            class="icon-btn icon-btn-ghost"
+            id="btn-edit-project"
+            title="Rename project"
+          >
+            <i class="ti ti-pencil"></i>
+          </button>
+          <button
+            class="icon-btn icon-btn-danger"
+            id="btn-delete-project"
+            title="Delete project"
+          >
+            <i class="ti ti-trash"></i>
+          </button>
+        </div>
+
+        <!-- Add task input -->
+        <div class="add-task-row" id="add-task-row" hidden>
           <div class="add-task-input-wrap">
             <i class="ti ti-plus"></i>
             <input
@@ -101,22 +103,25 @@
             />
           </div>
         </div>
-        <!-- Progress Bar-->
-        <div class="progress-row">
+
+        <!-- Progress Bar -->
+        <div class="progress-row" id="progress-row" hidden>
           <div class="progress-bar">
             <div class="progress-bar-fill" id="progress-bar-fill"></div>
           </div>
           <span class="progress-label" id="progress-label">0%</span>
         </div>
 
-        <!--Task list-->
-        <ul class="task-list" id="task-list"></ul>
-        <!-- Empty Task State-->
+        <!-- Task list -->
+        <ul class="task-list" id="task-list" hidden></ul>
+
+        <!-- Empty Task State -->
         <div class="task-empty" id="task-empty" hidden>
           <i class="ti ti-clipboard-list"></i>
           <p>No tasks yet. add one above</p>
         </div>
       </section>
+
       <!-- MODAL - Task Detail / Edit -->
       <div
         class="modal-overlay"
@@ -132,21 +137,20 @@
             <button
               class="icon-btn icon-btn-ghost"
               id="modal-close"
-              aria-label="close"
+              aria-label="Close"
             >
               <i class="ti ti-x"></i>
             </button>
           </div>
           <div class="modal-body">
-            <!-- Task Test-->
-            <label for="modal-text" class="field-label"></label>
+            <!-- Task title -->
+            <label for="modal-text" class="field-label">Task</label>
             <input
               type="text"
               class="modal-input"
               id="modal-text"
-              placeholder="task title"
+              placeholder="Task title"
             />
-
             <!-- Notes -->
             <label for="modal-notes" class="field-label">Notes</label>
             <textarea
@@ -155,10 +159,9 @@
               placeholder="Add notes…"
               rows="4"
             ></textarea>
-
             <!-- Status -->
             <label class="field-label">Status</label>
-            <div class="status-toogle">
+            <div class="status-toggle">
               <button
                 class="status-btn"
                 data-status="pending"
@@ -174,7 +177,7 @@
                 <i class="ti ti-circle-check"></i> Completed
               </button>
             </div>
-            <!-- Created date (read-only)-->
+            <!-- Created date (read-only) -->
             <p class="modal-created" id="modal-created"></p>
           </div>
           <div class="modal-footer">
@@ -187,13 +190,14 @@
           </div>
         </div>
       </div>
-      <!-- MODAL New / Rename Project -->
+
+      <!-- MODAL - New / Rename Project -->
       <div
         class="modal-overlay"
         id="project-modal-overlay"
         hidden
         role="dialog"
-        aria-model="true"
+        aria-modal="true"
         aria-labelledby="project-modal-title"
       >
         <div class="modal modal-sm">
@@ -218,7 +222,6 @@
               placeholder="e.g. Work, Shopping, Travel…"
               autocomplete="off"
             />
-
             <!-- Color picker -->
             <label class="field-label" style="margin-top: 1rem">Color</label>
             <div class="color-picker" id="color-picker">
@@ -236,5 +239,6 @@
         </div>
       </div>
     </div>
+    <script type="module" src="./index.js"></script>
   </body>
 </html>

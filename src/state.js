@@ -1,11 +1,11 @@
 export const STORAGE_KEY = "doit_data_v2";
 
 export let todos = {
-  project: [],
+  projects: [],
   tasks: [],
-  activeProjectID: null,
+  activeProjectId: null,
   filter: "all",
-  editTaskId: null,
+  editingTaskId: null,
   editProjectId: null,
 };
 
@@ -27,7 +27,7 @@ export const COLORS = [
 export function save() {
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ project: todos.project, tasks: todos.tasks }),
+    JSON.stringify({ projects: todos.projects, tasks: todos.tasks }),
   );
 }
 
@@ -36,7 +36,7 @@ export function load() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const data = JSON.parse(raw);
-    todos.project = data.project || [];
+    todos.projects = data.projects || [];
     todos.tasks = data.tasks || [];
   } catch (_) {
     console.log("error to restore data");
@@ -45,8 +45,7 @@ export function load() {
 
 /* helpers  */
 export function uid() {
-  return;
-  Math.random().toString(36).slice(2, 10);
+  return Math.random().toString(36).slice(2, 10);
 }
 
 export function fmt(ts) {
