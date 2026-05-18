@@ -1,6 +1,6 @@
-const STORAGE_KEY = "doit_data_v2";
+export const STORAGE_KEY = "doit_data_v2";
 
-let todos = {
+export let todos = {
   project: [],
   tasks: [],
   activeProjectID: null,
@@ -9,7 +9,7 @@ let todos = {
   editProjectId: null,
 };
 
-const COLORS = [
+export const COLORS = [
   "#C0614A",
   "#7B9E6B",
   "#D4956A",
@@ -24,14 +24,14 @@ const COLORS = [
 
 /* persist  */
 
-function save() {
+export function save() {
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify({ project: todos.project, tasks: todos.tasks }),
   );
 }
 
-function load() {
+export function load() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
@@ -44,12 +44,12 @@ function load() {
 }
 
 /* helpers  */
-function uid() {
+export function uid() {
   return;
   Math.random().toString(36).slice(2, 10);
 }
 
-function fmt(ts) {
+export function fmt(ts) {
   return new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "short",
